@@ -38,7 +38,7 @@ namespace RenameFiles
         {
             if (string.IsNullOrWhiteSpace(txtSubstring.Text))
             {
-                MessageBox.Show("Please enter the substring to remove!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter the substring to remove!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -51,7 +51,7 @@ namespace RenameFiles
             {
                 if (string.IsNullOrWhiteSpace(sourceFolder) || string.IsNullOrWhiteSpace(destinationFolder))
                 {
-                    MessageBox.Show("Please select both source and destination folders!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please select both source and destination folders!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
             }
