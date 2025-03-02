@@ -1,88 +1,66 @@
-namespace RenameFiles
+namespace FileRenamer
 {
     public partial class Form1 : Form
     {
-        private string sourceFolder = "";
-        private string destinationFolder = "";
-
-        public Form1()
+        private void btnSelectSource_Click(object sender, EventArgs e)
         {
-            InitializeComponent();
-        }
-
-        private void btnSelectSourceFolder_Click(object sender, EventArgs e)
-        {
-            using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+            using (FolderBrowserDialog dialog = new FolderBrowserDialog())
             {
-                if (fbd.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    sourceFolder = fbd.SelectedPath;
-                    lblSourceFolder.Text = "Folder: " + sourceFolder;
+                    txtSourcePath.Text = dialog.SelectedPath;
                 }
             }
         }
 
-        private void btnSelectDestinationFolder_Click(object sender, EventArgs e)
+        private void btnSelectDestination_Click(object sender, EventArgs e)
         {
-            using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+            using (FolderBrowserDialog dialog = new FolderBrowserDialog())
             {
-                if (fbd.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    destinationFolder = fbd.SelectedPath;
-                    lblDestinationFolder.Text = "Destination: " + destinationFolder;
+                    txtDestinationPath.Text = dialog.SelectedPath;
                 }
             }
         }
 
-        private void btnRename_Click(object sender, EventArgs e)
+        private void btnRenameFiles_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtSubstring.Text))
+            string sourcePath = txtSourcePath.Text;
+            string destinationPath = txtDestinationPath.Text;
+            string textToRemove = txtTextToRemove.Text;
+
+            if (string.IsNullOrWhiteSpace(sourcePath) || string.IsNullOrWhiteSpace(destinationPath) || string.IsNullOrWhiteSpace(textToRemove))
             {
-                MessageBox.Show("Please enter the substring to remove!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, preencha todos os campos.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (rbtnCurrentFolder.Checked)
+            if (!Directory.Exists(sourcePath) || !Directory.Exists(destinationPath))
             {
-                sourceFolder = Directory.GetCurrentDirectory();
-                destinationFolder = sourceFolder;
-            }
-            else if (rbtnSelectFolder.Checked)
-            {
-                if (string.IsNullOrWhiteSpace(sourceFolder) || string.IsNullOrWhiteSpace(destinationFolder))
-                {
-                    MessageBox.Show("Please select both source and destination folders!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                MessageBox.Show("Uma ou ambas as pastas selecionadas não existem.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
             try
             {
-                string substringToRemove = txtSubstring.Text;
-                var files = Directory.GetFiles(sourceFolder)
-                                     .Where(f => Path.GetFileName(f).Contains(substringToRemove))
-                                     .ToList();
+                string[] files = Directory.GetFiles(sourcePath);
+                int count = 0;
 
-                if (files.Count == 0)
+                foreach (string file in files)
                 {
-                    MessageBox.Show("No files found with the given substring.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
+                    string fileName = Path.GetFileName(file);
+                    string newFileName = fileName.Replace(textToRemove, "", StringComparison.OrdinalIgnoreCase);
+                    string newFilePath = Path.Combine(destinationPath, newFileName);
+                    File.Copy(file, newFilePath);
+                    count++;
                 }
 
-                foreach (var file in files)
-                {
-                    string originalName = Path.GetFileName(file);
-                    string newName = originalName.Replace(substringToRemove, "").Trim();
-                    string newPath = Path.Combine(destinationFolder, newName);
-
-                    File.Move(file, newPath);
-                }
-
-                MessageBox.Show("Files renamed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"{count} arquivos renomeados com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error renaming files: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Erro ao processar arquivos: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

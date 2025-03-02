@@ -1,3 +1,5 @@
+using FileRenamer;
+
 namespace RenameFiles;
 
 static class Program
