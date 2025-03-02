@@ -119,14 +119,14 @@
             this.tabPageBetween.Name = "tabPageBetween";
             this.tabPageBetween.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageBetween.Size = new System.Drawing.Size(532, 192);
-            this.tabPageBetween.Text = "Remover Entre Strings";
+            this.tabPageBetween.Text = "Remover Entre Textos";
             this.tabPageBetween.UseVisualStyleBackColor = true;
 
             this.lblInitialString.AutoSize = true;
             this.lblInitialString.Location = new System.Drawing.Point(10, 15);
             this.lblInitialString.Name = "lblInitialString";
             this.lblInitialString.Size = new System.Drawing.Size(83, 15);
-            this.lblInitialString.Text = "String Inicial:";
+            this.lblInitialString.Text = "Texto Inicial:";
 
             this.txtInitialString.Location = new System.Drawing.Point(120, 12);
             this.txtInitialString.Size = new System.Drawing.Size(300, 23);
@@ -135,7 +135,7 @@
             this.lblFinalString.Location = new System.Drawing.Point(10, 45);
             this.lblFinalString.Name = "lblFinalString";
             this.lblFinalString.Size = new System.Drawing.Size(70, 15);
-            this.lblFinalString.Text = "String Final:";
+            this.lblFinalString.Text = "Texto Final:";
 
             this.txtFinalString.Location = new System.Drawing.Point(120, 42);
             this.txtFinalString.Size = new System.Drawing.Size(300, 23);
